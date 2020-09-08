@@ -1,0 +1,82 @@
+server:
+  port: 8088
+
+---
+
+spring:
+  profiles: default
+  cloud:
+    gateway:
+      routes:
+        - id: MeetingRoom
+          uri: http://localhost:8081
+          predicates:
+            - Path=/meetingRooms/** 
+        - id: Reservation
+          uri: http://localhost:8082
+          predicates:
+            - Path=/reservations/** 
+        - id: Notice
+          uri: http://localhost:8083
+          predicates:
+            - Path=
+        - id: Lookup
+          uri: http://localhost:8084
+          predicates:
+            - Path=/lookup/**
+        - id: Demerit
+          uri: http://localhost:8085
+          predicates:
+            - Path=/demerits/** 
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins:
+              - "*"
+            allowedMethods:
+              - "*"
+            allowedHeaders:
+              - "*"
+            allowCredentials: true
+
+
+---
+
+spring:
+  profiles: docker
+  cloud:
+    gateway:
+      routes:
+        - id: MeetingRoom
+          uri: http://meetingroom:8080
+          predicates:
+            - Path=/meetingRooms/** 
+        - id: Reservation
+          uri: http://reservation:8080
+          predicates:
+            - Path=/reservations/** 
+        - id: Notice
+          uri: http://notice:8080
+          predicates:
+            - Path=
+        - id: Lookup
+          uri: http://lookup:8080
+          predicates:
+            - Path=/lookups/**
+        - id: Demerit
+          uri: http://demerit:8080
+          predicates:
+            - Path=/demerits/** 
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins:
+              - "*"
+            allowedMethods:
+              - "*"
+            allowedHeaders:
+              - "*"
+            allowCredentials: true
+
+server:
+  port: 8080
